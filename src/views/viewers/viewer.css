@@ -1,0 +1,105 @@
+
+
+.e-pane.e-pane-vertical.e-scrollable.e-static-pane.e-collapsible.e-resizable:first-child{
+    height: 100%;
+    position: relative;
+}
+
+
+#forgeViewer #LateralToolbar.ControlGroup {
+    background-color: black !important;
+    border-radius: 10px !important;
+    display: block !important;
+};
+
+#forgeViewer #guiviewer3d-toolbar{
+    background-color: rgba(255,255,255,0.10)!important;
+    border-radius: 5px !important;
+    display: block !important;
+}
+
+#forgeViewer #settingsTools{
+    background-color: rgba(255,255,255,0.15)!important;
+    border-radius: 15px!important;
+    color: rgba(1,1,1,0.80)!important;
+    display: block !important;
+}
+
+#forgeViewer #modelTools {
+    background-color: rgba(255,255,255,0.15)!important;
+    border-radius: 15px!important;
+    color: rgba(1,1,1,0.80)!important;
+    display: block!important;
+}
+
+#forgeViewer #navTools{
+    background-color: rgba(255,255,255,0.15)!important;
+    border-radius: 15px!important;
+    color: rgba(1,1,1,0.80)!important;
+    display: block!important;
+}
+
+#forgeViewer #toolbar-documentModels{
+    background-color: rgba(1,1,1,0.55)!important;
+    border-radius: 15px!important;
+    color: rgba(1,1,1,0.90)!important;
+    display: block!important;
+}
+
+
+/*.e-splitter.e-splitter-horizontal .e-pane.e-scrollable, .e-splitter.e-splitter-vertical .e-pane.e-scrollable {
+    z-index: 999999;
+}
+.e-splitter .e-split-bar.e-split-bar-vertical.e-resizable-split-bar {
+    z-index: 99999;
+}
+.e-splitter .e-split-bar.e-split-bar-vertical .e-navigate-arrow:not(.e-arrow-down) {
+    z-index: 99999;
+}
+.e-splitter .e-split-bar.e-split-bar-vertical .e-navigate-arrow.e-arrow-down {
+    z-index: 999999;
+}*/
+
+.element {
+    width: 120px;
+    height: 160px;
+    box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+    border: 1px solid rgba(127,255,255,0.25);
+    font-family: Helvetica, sans-serif;
+    text-align: center;
+    line-height: normal;
+    cursor: default;
+}
+
+.element:hover {
+    box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+    border: 1px solid rgba(127,255,255,0.75);
+}
+
+    .element .number {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 12px;
+        color: rgba(127,255,255,0.75);
+    }
+
+    .element .symbol {
+        position: absolute;
+        top: 40px;
+        left: 0px;
+        right: 0px;
+        font-size: 60px;
+        font-weight: bold;
+        color: rgba(255,255,255,0.75);
+        text-shadow: 0 0 10px rgba(0,255,255,0.95);
+    }
+
+    .element .details {
+        position: absolute;
+        bottom: 15px;
+        left: 0px;
+        right: 0px;
+        font-size: 12px;
+        color: rgba(127,255,255,0.75);
+    }

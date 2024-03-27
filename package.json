@@ -1,0 +1,98 @@
+{
+  "name": "react-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@syncfusion/ej2": "^24.1.46",
+    "@syncfusion/ej2-icons": "^24.1.41",
+    "@syncfusion/ej2-react-buttons": "^24.1.46",
+    "@syncfusion/ej2-react-calendars": "^24.2.9",
+    "@syncfusion/ej2-react-charts": "^24.1.46",
+    "@syncfusion/ej2-react-diagrams": "^25.1.35",
+    "@syncfusion/ej2-react-documenteditor": "^25.1.35",
+    "@syncfusion/ej2-react-dropdowns": "^24.1.46",
+    "@syncfusion/ej2-react-filemanager": "^25.1.35",
+    "@syncfusion/ej2-react-gantt": "^24.2.9",
+    "@syncfusion/ej2-react-grids": "^24.1.45",
+    "@syncfusion/ej2-react-image-editor": "^24.2.8",
+    "@syncfusion/ej2-react-inplace-editor": "^25.1.35",
+    "@syncfusion/ej2-react-inputs": "^24.2.7",
+    "@syncfusion/ej2-react-kanban": "^24.2.9",
+    "@syncfusion/ej2-react-layouts": "^24.2.4",
+    "@syncfusion/ej2-react-lists": "^24.2.8",
+    "@syncfusion/ej2-react-maps": "^24.1.41",
+    "@syncfusion/ej2-react-navigations": "^24.2.4",
+    "@syncfusion/ej2-react-notifications": "^24.2.4",
+    "@syncfusion/ej2-react-pdfviewer": "^25.1.35",
+    "@syncfusion/ej2-react-popups": "^24.1.46",
+    "@syncfusion/ej2-react-progressbar": "^24.2.9",
+    "@syncfusion/ej2-react-ribbon": "^24.2.8",
+    "@syncfusion/ej2-react-schedule": "^24.2.8",
+    "@syncfusion/ej2-react-splitbuttons": "^24.1.46",
+    "@syncfusion/ej2-react-spreadsheet": "^24.2.9",
+    "@syncfusion/ej2-react-treegrid": "^24.2.8",
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/forge-viewer": "^7.69.9",
+    "@types/jest": "^27.0.3",
+    "@types/node": "^16.11.9",
+    "@types/react": "^17.0.76",
+    "@types/react-dom": "^17.0.11",
+    "axios": "^1.6.7",
+    "base-64": "^1.0.0",
+    "bim-fragment": "^1.4.2",
+    "client-zip": "^2.4.4",
+    "forge-apis": "^0.9.9",
+    "forge-dataviz-iot-data-modules": "^0.1.11",
+    "forge-dataviz-iot-react-components": "^0.1.17",
+    "jquery": "^3.7.1",
+    "jspdf": "^2.5.1",
+    "mapbox-gl": "^3.2.0",
+    "openbim-components": "^1.4.15",
+    "query-string": "^9.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-load-script": "^0.0.6",
+    "react-router-dom": "6",
+    "react-scripts": "^5.0.1",
+    "three": "^0.160.1",
+    "typescript": "^4.5.2",
+    "web-ifc": "^0.0.51",
+    "web-ifc-viewer": "^1.0.218",
+    "web-vitals": "^2.1.2",
+    "zustand": "^4.5.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/babel__core": "^7.20.5",
+    "@types/babel-generator": "^6.25.8",
+    "@types/base-64": "^1.0.2",
+    "@types/jquery": "^3.5.29",
+    "@types/react-router-dom": "^5.3.2",
+    "@types/three": "^0.161.2"
+  }
+}
