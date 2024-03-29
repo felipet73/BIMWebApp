@@ -198,7 +198,7 @@ const LayoutAppplications = () => {
                             <ChildPanel />
                             <ToastComponent id='toast' ref={toastInstance} position={{ X: 'Right' }} width='auto' height={25} timeOut={2000} cssClass='e-toast-info' showCloseButton={true} target="#default-ribbonPlaceHolder" newestOnTop={true} animation={{ show: { effect: 'FadeIn' }, hide: { effect: 'FadeOut' } }} />
                         </div>
-                        <ListViewComponent id='default-pictureList' dataSource={['Autodesk Viewer', 'IFC Viewer']} showHeader={true} headerTitle="Select Viewer" select={(args: any) => { updateContent("Viewer -> " + args.text); }}></ListViewComponent>
+                        {/* <ListViewComponent id='default-pictureList' dataSource={['Autodesk Viewer', 'IFC Viewer']} showHeader={true} headerTitle="Select Viewer" select={(args: any) => { updateContent("Viewer -> " + args.text); }}></ListViewComponent> */}
                     </div>
 
                 </div>

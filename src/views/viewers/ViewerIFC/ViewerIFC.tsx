@@ -10,9 +10,10 @@ import * as OBC from 'openbim-components';
 export const ViewerIFC =()=>{
 
     const selectedModels = useViewerIFCStore(store => store.selectedModels);
+    const selectedModelsIFC = useViewerIFCStore(store => store.selectedModelsIFC);
     const selectedProperties = useViewerIFCStore(store => store.selectedProperties);
     //const { viewerCIFC } = useContext( GlobalContext );
-    const { init, fragments, components, mainToolbar } = useContext( IFCContext );
+    const { init, fragments, components, mainToolbar, fragmentIfcLoader, scene } = useContext( IFCContext );
     const resizing = useViewerIFCStore(store => store.resizing);
     const setResizing = useViewerIFCStore(store => store.setResizing);
     /*const excludedCats = [
@@ -45,25 +46,43 @@ export const ViewerIFC =()=>{
         (async()=>{
             if(fragments.groups.length) return;
             const buffer = new Uint8Array(selectedModels);
+            
             const group = await fragments.load(buffer);
             console.log(buffer)
             console.log(group)
             fragments.load(buffer); 
+            
+            
             //components.renderer.resize();
             group.setLocalProperties(selectedProperties);
             console.log(selectedProperties)
             //const highlighter = new OBC.FragmentHighlighter(components, fragments);
             try{
+              const classifier = new OBC.FragmentClassifier(components);
+              classifier.byStorey(group);
+              classifier.byEntity(group);
+  
+              const modelTree = new OBC.FragmentTree(components);
+              await modelTree.init();
+              modelTree.update(['storeys', 'entities']);
+
               const highlighter = new OBC.FragmentHighlighter(components);
               highlighter.setup();  
-              highlighter.outlineEnabled = true;  
+              highlighter.outlineEnabled = true;
+              highlighter.updateHighlight();  
               components.renderer.postproduction.customEffects.outlineEnabled = true;            
               //const postproduction = components.renderer.postproduction; 
-              const propsProcessor = new OBC.IfcPropertiesProcessor(components)
+              const propsProcessor = new OBC.IfcPropertiesProcessor(components);
+              
+              
+              const propsManager = new OBC.IfcPropertiesManager(components);
+              propsProcessor.propertiesManager = propsManager;              
+              
+              
               propsProcessor.uiElement.get("propertiesWindow").visible = true;
               propsProcessor.process(group);
   
-  
+              
               const highlighterEvents = highlighter.events;
               highlighterEvents.select.onClear.add(() => {
               propsProcessor.cleanPropertiesList();
@@ -84,11 +103,29 @@ export const ViewerIFC =()=>{
                   }
                   if(group) {
                     console.log(group)
-                  //propsProcessor.renderProperties(group, expressID);
+                    propsProcessor.renderProperties(fragments.groups[0], expressID);
                   }  
                 })
+
+                modelTree.onSelected.add(({ items, visible }) => {
+                  if(visible) {
+                  highlighter.highlightByID('select', items, true, true);
+                  }
+                  });
+                  modelTree.onHovered.add(({ items, visible }) => {
+                  if(visible) {
+                  highlighter.highlightByID('hover', items);
+                  }
+                  });
+
                 components.ui.addToolbar(mainToolbar);
                 mainToolbar.addChild(propsProcessor.uiElement.get("main"));  
+                //components.ui.addToolbar(mainToolbar);
+                mainToolbar.addChild(modelTree.uiElement.get("main"));
+                //components.ui.addToolbar(toolbar);
+                
+                //mainToolbar.addChild(modelTree.uiElement.get("main"));
+                //components.ui.addToolbar(toolbar);                
   
             }catch(err)
             {}
@@ -264,6 +301,122 @@ export const ViewerIFC =()=>{
         //components.ui.addToolbar(toolbar);
         
     },[selectedModels])
+
+
+
+    useEffect(()=>{
+
+
+      if (selectedModelsIFC!==null){
+        (async()=>{
+            if(fragments.groups.length) return;
+            const buffer = new Uint8Array(selectedModelsIFC);
+            
+            //const group = await fragments.load(buffer);
+            console.log(buffer)
+            //console.log(group)
+            //fragments.load(buffer); 
+            const model = await fragmentIfcLoader.load(buffer, "example");
+            scene.add(model);
+
+
+            async function exportFragments() {
+              //if (!fragments.groups.length) return;
+              const group = fragments.groups[0];
+              const data = fragments.export(group);
+              const blob = new Blob([data]);
+              const fragmentFile = new File([blob], 'small.frag');
+              const files = [];
+              files.push(fragmentFile);
+              const properties = group.getLocalProperties();
+              if (properties) {
+              //files.push(new File([JSON.stringify(properties)], 'small.json'));
+              group.setLocalProperties(([JSON.stringify(properties)]));
+              }
+              //const result = await downloadZip(files).blob();
+              //result.name = 'example';
+              //download(result);
+              }
+            
+            //components.renderer.resize();
+            //group.setLocalProperties(selectedProperties);
+            //console.log(selectedProperties)
+            //const highlighter = new OBC.FragmentHighlighter(components, fragments);
+            try{
+              const classifier = new OBC.FragmentClassifier(components);
+              classifier.byStorey(model);
+              classifier.byEntity(model);
+  
+              const modelTree = new OBC.FragmentTree(components);
+              await modelTree.init();
+              modelTree.update(['storeys', 'entities']);
+
+              const highlighter = new OBC.FragmentHighlighter(components);
+              highlighter.setup();  
+              highlighter.outlineEnabled = true;  
+              highlighter.updateHighlight();                
+              components.renderer.postproduction.customEffects.outlineEnabled = true;            
+              //const postproduction = components.renderer.postproduction; 
+              const propsProcessor = new OBC.IfcPropertiesProcessor(components)
+              propsProcessor.uiElement.get("propertiesWindow").visible = true;
+              propsProcessor.process(model);
+  
+  
+              const highlighterEvents = highlighter.events;
+              highlighterEvents.select.onClear.add(() => {
+              propsProcessor.cleanPropertiesList();
+              });
+              highlighterEvents.select.onHighlight.add(
+                (selection) => {
+                  const fragmentID = Object.keys(selection)[0];
+                  const expressID = [...selection[fragmentID]][0];
+                  console.log(expressID);
+                  let group
+                  for (const group1 of fragments.groups) {
+                  for(const [_key, value] of group1.keyFragments) {
+                  if(value === fragmentID) {
+                    group = group1;
+                  break;
+                  }
+                  }
+                  }
+                  if(group) {
+                    console.log(group)
+                  propsProcessor.renderProperties(group, expressID);
+                  }  
+                })
+
+                modelTree.onSelected.add(({ items, visible }) => {
+                  if(visible) {
+                  highlighter.highlightByID('select', items, true, true);
+                  console.log('Items',items)
+                  }
+                  });
+                  modelTree.onHovered.add(({ items, visible }) => {
+                  if(visible) {
+                  highlighter.highlightByID('hover', items);
+                  }
+                  });
+
+                
+                components.ui.addToolbar(mainToolbar);
+                mainToolbar.addChild(propsProcessor.uiElement.get("main"));  
+                mainToolbar.addChild(modelTree.uiElement.get("main"));
+
+            }catch(err)
+            {}
+            console.log(components)
+            
+            
+            
+
+        })();
+    }   
+
+       
+        
+    },[selectedModelsIFC])
+
 
     /*async function loadIfcAsFragments() {
         const file = await fetch('../../../resources/small.ifc');

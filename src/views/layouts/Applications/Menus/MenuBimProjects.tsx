@@ -30,7 +30,11 @@ export const MenuBimProjects = ({updateContent,fileSelect,launchClick }:PrpsBimM
     const dictateOptions: ItemModel[] = [{ text: "Chinese" }, { text: "English" }, { text: "German" }, { text: "French" }];
     */
     const tableOptions: ItemModel[] = [{ text: "Insert Table" }, { text: "Draw Table" }, { text: "Convert Table" }, { text: "Excel SpreadSheet" }];
-    const shapeOptions: ItemModel[] = [{ text: "Lines" }, { text: "Rectangles" }, { text: "Basic Arrows" }, { text: "Basic Shapes" }, { text: "FlowChart" }];
+    const shapeOptions: ItemModel[] = [{ text: "Autodesk Viewer" }, { text: "IFC Viewer" }];
+    
+    
+    const modelsOptions: ItemModel[] = [{ text: "No project selected" }];
+
     const headerOptions: ItemModel[] = [{ text: "Insert Header" }, { text: "Edit Header" }, { text: "Remove Header" }];
     const footerOptions: ItemModel[] = [{ text: "Insert Footer" }, { text: "Edit Footer" }, { text: "Remove Footer" }];
     const pageOptions: ItemModel[] = [{ text: "Insert Top of page" }, { text: "Format Page Number" }, { text: "Format Page Number" }];
@@ -108,16 +112,12 @@ export const MenuBimProjects = ({updateContent,fileSelect,launchClick }:PrpsBimM
                                             <RibbonCollectionsDirective>
                                                 <RibbonCollectionDirective>
                                                     <RibbonItemsDirective>
-                                                        <RibbonItemDirective id='pictureddl' type="DropDown" dropDownSettings={{ iconCss: "e-icons e-image", content: "Viewer", target: '#default-pictureList' }}>
+                                                        {/* <RibbonItemDirective id='pictureddl' type="DropDown" dropDownSettings={{ iconCss: "e-icons e-image", content: "Viewer", target: '#default-pictureList' }}></RibbonItemDirective> */}
+                                                        <RibbonItemDirective type="DropDown" dropDownSettings={{ iconCss: "sf-icon-shapes", items: shapeOptions, content: "Viewer", select: (args) => { updateContent("Viewer -> " + args.item.text); } }}>
                                                         </RibbonItemDirective>
-                                                        <RibbonItemDirective type="DropDown" dropDownSettings={{ iconCss: "sf-icon-shapes", items: shapeOptions, content: "Shapes", select: (args) => { updateContent("Shapes -> " + args.item.text); } }}>
+                                                        <RibbonItemDirective type="DropDown" dropDownSettings={{ iconCss: "sf-icon-3d-model", items: modelsOptions, content: "3D Models", select: (args) => { updateContent("3D Models -> " + args.item.text); } }}>
                                                         </RibbonItemDirective>
-                                                        <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "sf-icon-3d-model", content: "3D Models", clicked: () => { updateContent("3D Models"); } }}>
-                                                        </RibbonItemDirective>
-                                                        <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "sf-icon-smart-art", content: "Smart Art", clicked: () => { updateContent("Smart Art"); } }}>
-                                                        </RibbonItemDirective>
-                                                        <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "sf-icon-chart", content: "Charts", clicked: () => { updateContent("Chart"); } }}>
-                                                        </RibbonItemDirective>
+
                                                         <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "sf-icon-screenshot", content: "Screenshot", clicked: () => { updateContent("Screenshot"); } }}>
                                                         </RibbonItemDirective>
                                                     </RibbonItemsDirective>
@@ -242,6 +242,64 @@ export const MenuBimProjects = ({updateContent,fileSelect,launchClick }:PrpsBimM
                                     </RibbonGroupsDirective>
                                 </RibbonTabDirective>
                                 
+                                {optionV1==='Home' &&
+                                <RibbonTabDirective header='View'>
+                                    <RibbonGroupsDirective>
+                                    <RibbonGroupDirective header="Show" isCollapsible={true}>
+                                            <RibbonCollectionsDirective>
+                                                <RibbonCollectionDirective>
+                                                    <RibbonItemsDirective>
+                                                        <RibbonItemDirective type="CheckBox" checkBoxSettings={{ label: "Issues", checked: false, change: () => { updateContent("Issues"); } }}>
+                                                        </RibbonItemDirective>
+                                                        <RibbonItemDirective type="CheckBox" checkBoxSettings={{ label: "Comments", checked: false, change: () => { updateContent("Comments"); } }}>
+                                                        </RibbonItemDirective>
+                                                        <RibbonItemDirective type="CheckBox" checkBoxSettings={{ label: "Messages", checked: true, change: () => { updateContent("Messages"); } }}>
+                                                        </RibbonItemDirective>
+                                                    </RibbonItemsDirective>
+                                                </RibbonCollectionDirective>
+                                            </RibbonCollectionsDirective>
+                                        </RibbonGroupDirective>                                        
+                                        <RibbonGroupDirective header="Views" groupIconCss='e-icons e-print' orientation='Row'>
+                                            <RibbonCollectionsDirective>
+                                                <RibbonCollectionDirective>
+                                                    <RibbonItemsDirective>
+                                                        <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "sf-icon-read", content: "Read Mode", clicked: () => { updateContent("Read Mode"); } }}>
+                                                        </RibbonItemDirective>
+                                                        <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "e-icons e-print", content: "Print Layout", clicked: () => { updateContent("Print Layout"); } }}>
+                                                        </RibbonItemDirective>
+                                                        <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "sf-icon-web-layout", content: "Web Layout", clicked: () => { updateContent("Web Layout"); } }}>
+                                                        </RibbonItemDirective>
+                                                    </RibbonItemsDirective>
+                                                </RibbonCollectionDirective>
+                                            </RibbonCollectionsDirective>
+                                        </RibbonGroupDirective>
+                                        <RibbonGroupDirective header="Zoom" groupIconCss="e-icons e-zoom-to-fit" orientation="Row">
+                                            <RibbonCollectionsDirective>
+                                                <RibbonCollectionDirective>
+                                                    <RibbonItemsDirective>
+                                                        <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "e-icons e-zoom-in", content: "Zoom in", clicked: () => { updateContent("Zoom in"); } }}>
+                                                        </RibbonItemDirective>
+                                                        <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "e-icons e-zoom-out", content: "Zoom out", clicked: () => { updateContent("Zoom out"); } }}>
+                                                        </RibbonItemDirective>
+                                                    </RibbonItemsDirective>
+                                                </RibbonCollectionDirective>
+                                            </RibbonCollectionsDirective>
+                                        </RibbonGroupDirective>
+                                        
+                                        <RibbonGroupDirective header="Dark Mode" isCollapsible={false}>
+                                            <RibbonCollectionsDirective>
+                                                <RibbonCollectionDirective>
+                                                    <RibbonItemsDirective>
+                                                        <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "sf-icon-mode", content: "Dark Mode", clicked: () => { updateContent("Dark Mode"); } }}>
+                                                        </RibbonItemDirective>
+                                                    </RibbonItemsDirective>
+                                                </RibbonCollectionDirective>
+                                            </RibbonCollectionsDirective>
+                                        </RibbonGroupDirective>
+                                    </RibbonGroupsDirective>
+                                </RibbonTabDirective> 
+                                }
+
 
 
                                 {optionV1 === 'Home' &&
@@ -296,62 +354,6 @@ export const MenuBimProjects = ({updateContent,fileSelect,launchClick }:PrpsBimM
                                 }
 
 
-                                {optionV1==='ProjectInformation' &&
-                                <RibbonTabDirective header='View'>
-                                    <RibbonGroupsDirective>
-                                        <RibbonGroupDirective header="Views" groupIconCss='e-icons e-print' orientation='Row'>
-                                            <RibbonCollectionsDirective>
-                                                <RibbonCollectionDirective>
-                                                    <RibbonItemsDirective>
-                                                        <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "sf-icon-read", content: "Read Mode", clicked: () => { updateContent("Read Mode"); } }}>
-                                                        </RibbonItemDirective>
-                                                        <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "e-icons e-print", content: "Print Layout", clicked: () => { updateContent("Print Layout"); } }}>
-                                                        </RibbonItemDirective>
-                                                        <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "sf-icon-web-layout", content: "Web Layout", clicked: () => { updateContent("Web Layout"); } }}>
-                                                        </RibbonItemDirective>
-                                                    </RibbonItemsDirective>
-                                                </RibbonCollectionDirective>
-                                            </RibbonCollectionsDirective>
-                                        </RibbonGroupDirective>
-                                        <RibbonGroupDirective header="Zoom" groupIconCss="e-icons e-zoom-to-fit" orientation="Row">
-                                            <RibbonCollectionsDirective>
-                                                <RibbonCollectionDirective>
-                                                    <RibbonItemsDirective>
-                                                        <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "e-icons e-zoom-in", content: "Zoom in", clicked: () => { updateContent("Zoom in"); } }}>
-                                                        </RibbonItemDirective>
-                                                        <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "e-icons e-zoom-out", content: "Zoom out", clicked: () => { updateContent("Zoom out"); } }}>
-                                                        </RibbonItemDirective>
-                                                    </RibbonItemsDirective>
-                                                </RibbonCollectionDirective>
-                                            </RibbonCollectionsDirective>
-                                        </RibbonGroupDirective>
-                                        <RibbonGroupDirective header="Show" isCollapsible={true}>
-                                            <RibbonCollectionsDirective>
-                                                <RibbonCollectionDirective>
-                                                    <RibbonItemsDirective>
-                                                        <RibbonItemDirective type="CheckBox" checkBoxSettings={{ label: "Ruler", checked: false, change: () => { updateContent("Ruler"); } }}>
-                                                        </RibbonItemDirective>
-                                                        <RibbonItemDirective type="CheckBox" checkBoxSettings={{ label: "Gridlines", checked: false, change: () => { updateContent("Gridlines"); } }}>
-                                                        </RibbonItemDirective>
-                                                        <RibbonItemDirective type="CheckBox" checkBoxSettings={{ label: "Navigation Pane", checked: true, change: () => { updateContent("Navigation Pane"); } }}>
-                                                        </RibbonItemDirective>
-                                                    </RibbonItemsDirective>
-                                                </RibbonCollectionDirective>
-                                            </RibbonCollectionsDirective>
-                                        </RibbonGroupDirective>
-                                        <RibbonGroupDirective header="Dark Mode" isCollapsible={false}>
-                                            <RibbonCollectionsDirective>
-                                                <RibbonCollectionDirective>
-                                                    <RibbonItemsDirective>
-                                                        <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "sf-icon-mode", content: "Dark Mode", clicked: () => { updateContent("Dark Mode"); } }}>
-                                                        </RibbonItemDirective>
-                                                    </RibbonItemsDirective>
-                                                </RibbonCollectionDirective>
-                                            </RibbonCollectionsDirective>
-                                        </RibbonGroupDirective>
-                                    </RibbonGroupsDirective>
-                                </RibbonTabDirective> 
-                                }
 
 
                                 <RibbonTabDirective header={actualProject ? actualProject.name : 'No Project selected'}>

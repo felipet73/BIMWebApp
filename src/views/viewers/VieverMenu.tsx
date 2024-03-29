@@ -26,6 +26,7 @@ const ViewerMenu = () => {
                     <div className='e-sample-resize-container'>
                         {/* Render the Tab Component */}
                         <TabComponent cssClass='responsive-mode' heightAdjustMode='None' height='78vh' width='auto' overflowMode={overflow} headerPlacement={headerPlacement} 
+                        //animation={{previous: { effect: 'FlipXDownIn', duration: 600, easing: 'ease' },next: { effect: 'FlipYLeftIn', duration: 600, easing: 'ease' }}}
                           onClick={(e:any)=>{
                             //console.log(e)
                             if (e.target.innerText==='ProjectInformation'){

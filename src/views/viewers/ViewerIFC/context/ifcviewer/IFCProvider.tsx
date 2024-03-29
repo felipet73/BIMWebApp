@@ -1,7 +1,7 @@
 /* eslint import/no-webpack-loader-syntax: off */
 import * as THREE from 'three';
 import * as OBC from 'openbim-components';
-import { useViewerIFCStore } from '../../../../../stores';
+import { useGlobalStore, useViewerIFCStore } from '../../../../../stores';
 import { useContext, useEffect, useReducer } from 'react';
 
 //@ts-ignore
@@ -45,6 +45,7 @@ export const IFCProvider = ({ children }: Props) => {
 
     const [state, dispatch] = useReducer( ifcReducer, INITIAL_STATE );
     const selectedModels = useViewerIFCStore(store => store.selectedModels);
+    const selectedTheme = useGlobalStore(store => store.selectedTheme);
 
     useEffect(() => {
         
@@ -96,6 +97,15 @@ export const IFCProvider = ({ children }: Props) => {
         const cube = new THREE.Mesh(boxGeometry, boxMaterial);
         cube.position.set(0, 1.5, 0);
         scene.add(cube); */
+        const materialManager = new OBC.MaterialManager(components);
+        if (selectedTheme==='material3'){
+            const backgroundColor = new THREE.Color("white");
+            materialManager.setBackgroundColor(backgroundColor);
+        }else{
+            materialManager.resetBackgroundColor();
+        }
+        
+
 
         components.scene?.setup();
         

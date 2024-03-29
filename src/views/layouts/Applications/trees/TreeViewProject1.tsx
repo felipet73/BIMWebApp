@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { ListViewComponent } from '@syncfusion/ej2-react-lists';
 import { useBimProjectsStore } from '../../../../stores';
 import { DropDownButtonComponent, ItemModel } from '@syncfusion/ej2-react-splitbuttons';
-//import './template.css';
+import './icons.css';
 //import { dataSource } from './listData';
 import TreeModelDetail from './TreeModelDetail';
 
@@ -39,7 +39,7 @@ const TreeViewProject1 = () => {
     let bookmark: any;
     let timeStamp: any;
     // Set customized list template
-    const listTemplate = (data: any) => {
+    const listTemplate1 = (data: any) => {
         return (
             <div className={true ? "clearfix desc e-list-wrapper e-list-multi-line e-list-avatar'" : "clearfix e-list-wrapper e-list-multi-line e-list-avatar"}
                 style={{ fontSize: "13px", fontFamily: "Segoe UI" }}>
@@ -70,6 +70,59 @@ const TreeViewProject1 = () => {
             </div>
         );
     }
+
+    const listTemplate = (data: any) => {
+        return (
+            
+      <div className="sample_container card_sample" style={{ height:'100%'}}>
+        {/* <!-- Card Component --> */}
+        <div className="e-card e-custom-card">
+          <div className="e-card-header">
+            {/* <!-- xLarge Circle Avatar--> */}
+            <img style={{ position: 'absolute', left: '30px', marginTop: '-8px', width: '45px', height: '45px' }} src={`${true ? "/assets/images/svf.png" : "/assets/icons/ocultar.png"}`} />
+            <img style={{ position: 'absolute', right: '10px', marginTop: '-58px', width: '35px', height: '35px' }} src={`${data?.open ? "/assets/icons/mostrar.png" : "/assets/icons/ocultar.png"}`} />
+            <div className="e-avatar e-avatar-circle e-avatar-xlarge" style={{ height:'150px', width:'150px' }}>
+                {
+               (data?.image && data?.image !== '') ?
+               <img className='e-avatar' src={`${process.env.REACT_APP_BASE_URL}images/models/${data?.image}`} style={{top:'auto', height: '80%', left:'-30px'}} /> :
+               <img src={`${"http://localhost:3001/api/images/users/e719a8ae-68bf-4ad0-a3b2-6702936cef42.png"}`} alt="profile_pic" style={{top:'auto', height: '80%', left:'-30px'}}/>
+ 
+                }
+            </div>
+            &nbsp;
+          </div>
+          <div className="e-card-header">
+            <div className="e-card-header-caption center">
+              <div className="e-card-header-title name">{data.name}</div>
+            </div>
+          </div>
+          <img style={{ position: 'absolute', left: '100px', marginTop: '8px', width: '25px', height: '25px' }} src={`${data?.open ? "/assets/icons/mostrar.png" : "/assets/icons/ocultar.png"}`} />
+                {data?.main && <img style={{ position: 'absolute', right: '10px', marginTop: '8px', width: '25px', height: '25px' }} src={`${"/assets/icons/main.png"}`} />}
+                <DropDownButtonComponent items={items} style={{ position: 'absolute', right: '5px', marginTop: '-155px' }} select={(e: any) => {
+                    //console.log(e, props);
+                }}></DropDownButtonComponent>
+
+          <div className="e-card-content">
+            <p className="avatar-content">{data.description}</p>
+          </div>
+          {
+                    data.createdAt !== "" ?
+                        <div>
+                            <div id="list-logo">
+                                <span className="bookmark"></span>
+                                <span className="comments"></span>
+                                <span className="share"></span>
+                            </div>
+                            <div className="timeStamp" style={{ marginLeft:'15px' }}>{data.createdAt}</div></div> : ""
+                }
+                {data?.open && <TreeModelDetail modelId={data?.id}/>}          
+        </div>
+      </div>
+    
+
+        );
+    }
+
 
     const onComplete = (): void => {
         let instance: any = document.getElementById('listview_template');
@@ -135,12 +188,7 @@ const TreeViewProject1 = () => {
 
 
     return (
-        <div className='control-pane'>
-            <div className='control-section' >
-                {/* ListView element */}
-                <ListViewComponent id='listview_template' dataSource={data} headerTitle={actualProyect?.name} showHeader={true} cssClass='e-list-template' actionComplete={onComplete.bind(this)} template={listTemplate as any}></ListViewComponent>
-            </div>
-        </div>
+                <ListViewComponent id='listview_template' dataSource={data} headerTitle={actualProyect?.name} showHeader={true} cssClass='e-list-template' actionComplete={onComplete.bind(this)} template={listTemplate as any} height='440px' width='100%' style={{ maxWidth:'1000px' }}></ListViewComponent>
     )
 }
 export default TreeViewProject1;
