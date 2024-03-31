@@ -1,18 +1,13 @@
+// TREE WITH MODELS SVF SOURCEDATA
+
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
 import { TreeGridComponent, ColumnsDirective, ColumnDirective, Selection, Filter, Sort, Reorder, Inject, ITreeData, RowDD, ContextMenu, Toolbar, Page, Edit } from '@syncfusion/ej2-react-treegrid';
-//import { countries } from './data';
 import { IFilter } from '@syncfusion/ej2-react-grids';
 import { ContextMenuItemModel, EditSettingsModel } from '@syncfusion/ej2-react-grids';
-//import { ActionEventArgs, getObject } from '@syncfusion/ej2-grids';
-//import { addClass, isNullOrUndefined } from '@syncfusion/ej2-base';
-//import { RatingComponent } from '@syncfusion/ej2-react-inputs';
 import { MenuEventArgs } from '@syncfusion/ej2-react-navigations'
-//import { getValue } from '@syncfusion/ej2-base';
 import { BeforeOpenCloseEventArgs } from '@syncfusion/ej2-react-inputs';
 import { tokenInterface, useGlobalStore } from '../../../../stores';
-//import { AxiosAutodesk } from '../../../../config/axios';
-//import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
 import { DropDownButtonComponent, ItemModel } from '@syncfusion/ej2-react-splitbuttons';
 import { encode as base64_encode} from 'base-64';
 import AddNewModel from '../../../Erp/Modals/bimprojects/AddNewModel';
@@ -213,17 +208,7 @@ const TreeSVFOptions = () => {
 
 
 
-  useEffect(() => {
-    if (selectedMenu==='NewProject') {
-      setStatus1(true)
-      setSelectedMenu('');
-    }
-    if (selectedMenu==='OpenProject') {
-      setStatus2(true)
-      setSelectedMenu('');
-    }
-    
-  }, [selectedMenu])
+  
 
 
 
@@ -256,9 +241,7 @@ const TreeSVFOptions = () => {
 
   return (
     <div className="control-pane">
-      {status && <AddNewModel selectedModel={selectedModel} status={status} setStatus={setStatus} loading={loading} setLoading={setLoading}/>}
-      {status1 && <NewProject status={status1} setStatus={setStatus1} loading={loading1} setLoading={setLoading1}/>}
-      {status2 && <OpenProject status={status2} setStatus={setStatus2} />}
+      
       <div className="control-section">
         
         <TreeGridComponent

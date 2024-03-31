@@ -1,9 +1,11 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Ribbon, RibbonComponent, RibbonTabsDirective, RibbonTabDirective, RibbonCollectionsDirective, RibbonCollectionDirective, RibbonGroupsDirective, RibbonGroupDirective, RibbonItemsDirective, RibbonItemDirective, RibbonColorPicker, DisplayMode } from '@syncfusion/ej2-react-ribbon';
 import { RibbonFileMenu, RibbonItemSize, Inject, FileMenuEventArgs, LauncherClickEventArgs, RibbonGroupButtonSelection } from '@syncfusion/ej2-react-ribbon';
 import { ItemModel } from '@syncfusion/ej2-react-splitbuttons';
 //import { MenuItemModel } from '@syncfusion/ej2-react-navigations';
-import { useBimProjectsStore, useMenuStore } from '../../../../stores';
+import { useBimProjectsStore, useMenuStore, useViewerStore } from '../../../../stores';
+import { GlobalContext } from '../../../../context/GlobalContext';
+
 
 interface PrpsBimMenu {
     updateContent:(args: any) => void;
@@ -13,15 +15,31 @@ interface PrpsBimMenu {
  
 export const MenuBimProjects = ({updateContent,fileSelect,launchClick }:PrpsBimMenu) => {
 
-
+    
     const optionV1 = useBimProjectsStore(state => state.optionV1);
-
+    const actualModel = useBimProjectsStore(state => state.actualModel);
     let ribbonObj = useRef<RibbonComponent>(null);
     const actualProject = useBimProjectsStore(store=>store.actualProject);
     const fileOptions = useMenuStore(state => state.fileOptions);
     const setFileOptions = useMenuStore(state => state.setFileOptions);
     //const viewer = useGlobalStore(state => state.viewer);
     const pasteOptions: ItemModel[] = [{ text: "Keep Source Format" }, { text: "Merge Format" }, { text: "Keep Text Only" }];
+
+    const modeIssues = useViewerStore(state => state.modeIssues);
+    const setModeIssues = useViewerStore(state => state.setModeIssues);
+
+    const { viewerC, onItemHovering, onModelLoaded1, init22, removeEv, onItemClick } = React.useContext( GlobalContext );
+
+    const [modeIss, setModeIss] = useState(modeIssues);
+
+    /*useEffect(() => {
+      console.log('hay cambio en modes', modeIssues)
+        setTimeout(() => {
+        setModeIss({...modeIssues});
+      }, 150);
+    
+    }, [modeIssues])*/
+    
 
 
 
@@ -249,11 +267,58 @@ export const MenuBimProjects = ({updateContent,fileSelect,launchClick }:PrpsBimM
                                             <RibbonCollectionsDirective>
                                                 <RibbonCollectionDirective>
                                                     <RibbonItemsDirective>
-                                                        <RibbonItemDirective type="CheckBox" checkBoxSettings={{ label: "Issues", checked: false, change: () => { updateContent("Issues"); } }}>
+                                                        <RibbonItemDirective type="CheckBox" checkBoxSettings={{ label: "Issues", checked: modeIssues.issues, 
+                                                        change: async(e) => { 
+                                                            //setModeIss({...modeIss,issues:e.checked});
+                                                            console.log('Hay cambio de estado', modeIss.issues, e)
+                                                            const DataVizCore = Autodesk.DataVisualization.Core;
+                                                            if (modeIssues.issues===true){
+                                                                viewerC.current.removeEventListener(DataVizCore.MOUSE_HOVERING, onItemHovering);    
+                                                                viewerC.current.removeEventListener(DataVizCore.MOUSE_CLICK, onItemClick);
+                                                                
+                                                        
+                                                                const dataVizExt = viewerC.current.getExtension("Autodesk.DataVisualization");
+                                                                dataVizExt.removeAllViewables();
+                                                                removeEv(viewerC.current);
+                                                                setTimeout(()=>{setModeIssues({...modeIssues, issues:false})},100)
+                                                            }else{
+                                                                removeEv(viewerC.current);
+                                                                await onModelLoaded1(viewerC.current);
+                                                                init22(viewerC.current);
+                                                                viewerC.current.removeEventListener(DataVizCore.MOUSE_HOVERING, onItemHovering);
+                                                                viewerC.current.addEventListener(DataVizCore.MOUSE_HOVERING, onItemHovering);
+                                                                viewerC.current.removeEventListener(DataVizCore.MOUSE_CLICK, onItemClick);
+                                                                viewerC.current.addEventListener(DataVizCore.MOUSE_CLICK, onItemClick);
+
+                                                                setTimeout(()=>{setModeIssues({...modeIssues, issues:true})},100)
+                                                            }
+                                                                                                            
+                                                            updateContent("Issues"); } 
+                                                            }}>
                                                         </RibbonItemDirective>
-                                                        <RibbonItemDirective type="CheckBox" checkBoxSettings={{ label: "Comments", checked: false, change: () => { updateContent("Comments"); } }}>
+                                                        <RibbonItemDirective type="CheckBox" checkBoxSettings={{ label: "Comments", checked: modeIss.comments, change: () => { 
+                                                            
+                                                            if (modeIssues.comments===true){
+                                                                setModeIssues({...modeIssues, comments:false})
+                                                                
+                                                            }else{
+                                                                setModeIssues({...modeIssues, comments:true})
+                                                            }
+                                                            
+                                                            updateContent("Comments"); 
+                                                            } }}>
                                                         </RibbonItemDirective>
-                                                        <RibbonItemDirective type="CheckBox" checkBoxSettings={{ label: "Messages", checked: true, change: () => { updateContent("Messages"); } }}>
+                                                        <RibbonItemDirective type="CheckBox" checkBoxSettings={{ label: "Requiremets", checked: modeIss.requirements, change: () => { 
+
+                                                            if (modeIssues.requirements===true){
+                                                                setModeIssues({...modeIssues, requirements:false})
+                                                                
+                                                            }else{
+                                                                setModeIssues({...modeIssues, requirements:true})
+                                                            }
+                                                            
+                                                            updateContent("Messages"); 
+                                                            } }}>
                                                         </RibbonItemDirective>
                                                     </RibbonItemsDirective>
                                                 </RibbonCollectionDirective>
@@ -356,7 +421,8 @@ export const MenuBimProjects = ({updateContent,fileSelect,launchClick }:PrpsBimM
 
 
 
-                                <RibbonTabDirective header={actualProject ? actualProject.name : 'No Project selected'}>
+                                <RibbonTabDirective header={actualProject ? actualProject.name + ' - ' + (actualModel && actualModel.name)  : 'No Project selected **** Please open a Project ' }>
+
                                 </RibbonTabDirective>                                 
 
                             </RibbonTabsDirective>

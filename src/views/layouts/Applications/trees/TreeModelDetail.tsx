@@ -1,42 +1,18 @@
-/**
- * Dropdown Tree Template Sample
- */
+//DETAIL OF THE MODEL VIEWS
+
 import * as React from 'react';
 import { useEffect } from 'react';
 import { DropDownTreeComponent } from '@syncfusion/ej2-react-dropdowns';
 import './icons.css';
 import { useBimProjectsStore } from '../../../../stores';
-//import * as dataSource from './template-data.json';
 
-/*const dataSource:any={
-    templateData : [
-        { "id": 1, "name": "Steven Buchanan", "eimg": "10", "job": "General Manager", "hasChild": true, "expanded": true, "status":"busy" },
-        { "id": 2, "pid": 1, "name": "Laura Callahan", "eimg": "2", "job": "Product Manager", "hasChild": true, "status":"online" },
-        { "id": 3, "pid": 2, "name": "Andrew Fuller", "eimg": "7", "job": "Team Lead", "hasChild": true, "status":"away" },
-        { "id": 4, "pid": 3, "name": "Anne Dodsworth", "eimg": "1", "job": "Developer", "status":"busy" },
-        { "id": 10, "pid": 3, "name": "Lilly", "eimg": "5", "job": "Developer", "status":"online" },
-        { "id": 5, "pid": 1, "name": "Nancy Davolio", "eimg": "4", "job": "Product Manager", "hasChild": true, "status":"away" },
-        { "id": 6, "pid": 5, "name": "Michael Suyama", "eimg": "9", "job": "Team Lead", "hasChild": true, "status":"online" },
-        { "id": 7, "pid": 6, "name": "Robert King", "eimg": "8", "job": "Developer ", "status":"online" },
-        { "id": 11, "pid": 6, "name": "Mary", "eimg": "6", "job": "Developer ", "status":"away" },
-        { "id": 9, "pid": 1, "name": "Janet Leverling", "eimg": "3", "job": "HR", "status":"online" }
-    ]
-}*/
-
-interface Props{
-    modelId:string;
-}
+interface Props{modelId:string;}
 
 const TreeModelDetail = ({ modelId }:Props) => {
-    //const data = dataSource as any;
-
-    //const [data, setData] = React.useState<any>([]);
     const [fields, setFields] = React.useState<any>([]);
     const viewables = useBimProjectsStore(store => store.viewables);
 
     useEffect(() => {
-        //console.log('viewables', viewables);
-        
         const dataViewable = viewables.find((x:any) => x.ModelId === modelId);
         if (!dataViewable) return;
         console.log('viewable', dataViewable);
@@ -70,21 +46,21 @@ const TreeModelDetail = ({ modelId }:Props) => {
     // maps the appropriate column to fields property
     //const fields: object = { dataSource: data.templateData, value: 'id', parentValue: 'Parent', text: 'name', hasChildren: "hasChild" };
     //set the value to header template
-    const headerTemplate = () => {
+    /*const headerTemplate = () => {
         return (
             <div className="head"> Views </div>
         );
-    }
+    }*/
     //set the value to item template
-    const itemTemplate = (data: any) => {
+    /*const itemTemplate = (data: any) => {
         return (
             // <div> <img className="eimage" src={"src/images/employees/" + '2' + ".png"} />
                 <div> <div className="" > {data.name} </div></div>
                 // </div>
         );
-    }
+    }*/
     //set the value to footer template
-    const footerTemplate = () => {
+    /*const footerTemplate = () => {
         return (
             <div className="footer" > <div className="footer-content">
                 <span className="e-badge">
@@ -95,7 +71,7 @@ const TreeModelDetail = ({ modelId }:Props) => {
                 </span>
             </div> </div>
         );
-    }
+    }*/
 
     return (
       <DropDownTreeComponent fields={fields} placeholder="Select View" 

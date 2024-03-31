@@ -6,13 +6,15 @@ import ListIFCRepo from './Lists/ListIFCRepo';
 import TreeViewOptions from './trees/TreeViewOptions';
 import TreeViewProject1 from './trees/TreeViewProject1';
 import TreeProjectModel from './trees/TreeProjectModel';
-import TreeProjectProperties from './trees/TreeProjectProperties';
+import TreeProjectDetails from './trees/TreeProjectDetails';
 import GenericSideMenu, { OptionsMenuInterface } from '../SideMenus/GenericSideMenu';
 import ListUsers from './Lists/ListUsers';
 import NewDocument from '../../viewers/Tabs/DocumentOptions/NewDocument';
 import { useBimProjectsStore } from '../../../stores';
 import './sideoptions.css'
 import TreeSVFOptions from './trees/TreeSVFOptions';
+import TreeProjectDetailsIssues from './trees/TreeProjectDetailsIssues';
+import TreeProjectDetailsProducts from './trees/TreeProjectDetailsProducts';
 
 interface GenMenInterface {
   title: string;
@@ -53,7 +55,7 @@ const SideOptions = () => {
         setGeneralMenu([
           {title: 'Data Sources',
            iconCss:'e-icons e-format-painter',
-           expanded:true,
+           expanded:false,
            options:[
             {headertext:'Autodesk CC',content:TreeViewOptions},
             {headertext:'FileRepo (IFC-Frag)',content:ListIFCRepo},
@@ -62,7 +64,7 @@ const SideOptions = () => {
           , 
           {title: 'Project Models',
             iconCss:'e-icons e-format-painter',
-            expanded:false,
+            expanded:true,
            options:[
             { headertext:'ProjectModels',content:TreeViewProject1},
             {headertext:'Details',content:'Details'},      
@@ -72,25 +74,25 @@ const SideOptions = () => {
             expanded:false,
            options:[
             { headertext:'ProjectTree',content:TreeProjectModel},
-            {headertext:'Views',content:'Views'},      
-            { headertext:'Selections',content:'Selections'},
-            { headertext:'Lists',content:'Lists'},
+            {headertext:'Views', content: TreeProjectDetails },      
+            { headertext:'Selections', content: TreeProjectDetails },
+            { headertext:'Lists',content:TreeProjectDetails},
             ]},
           {title: 'Isues-Comments',
             iconCss:'e-icons e-format-painter',
             expanded:false,
            options:[
-            { headertext:'Issues',content:'Issues'},
-            {headertext:'Comments',content:'Comments'},
-            {headertext:'Lists',content:'Lists'},
+            { headertext:'Issues',content:TreeProjectDetailsIssues},
+            {headertext:'Comments',content:TreeProjectDetailsIssues},
+            {headertext:'Requirements',content:TreeProjectDetailsIssues},
           ]},
           {title: 'Products and Specifications',
             iconCss:'e-icons e-format-painter',
             expanded:false,
            options:[
             { headertext:'Products',content:ListItems1},
-            {headertext:'Suppliers',content:'Suppliers'},
-            {headertext:'Orders',content:'orders'},
+            {headertext:'Suppliers',content:TreeProjectDetailsProducts},
+            {headertext:'Orders',content:TreeProjectDetailsProducts},
           ]},
         {title: 'Comunity',
           iconCss:'e-icons e-format-painter',
@@ -123,7 +125,6 @@ const SideOptions = () => {
 
     return (
       <div className='control-pane'>
-        
         <div className='control-section accordion-control-section'>
           <div className= 'control Accordion-sample'  style = {{margin: '25px 0' }}>
             {/* Render the Accoridon Component */}

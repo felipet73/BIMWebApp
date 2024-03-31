@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { useState, useRef, useLayoutEffect } from 'react';
 import { DialogComponent, AnimationSettingsModel } from '@syncfusion/ej2-react-popups';
-import { GlobalContext } from '../../../../context/GlobalContext';
-import { TextBoxComponent } from '@syncfusion/ej2-react-inputs';
+//import { GlobalContext } from '../../../../context/GlobalContext';
+//import { TextBoxComponent } from '@syncfusion/ej2-react-inputs';
 import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
-//import Loading from '../../../layouts/common/Loading';
 import TreeFileProjects from '../../../layouts/Applications/trees/TreeFileProjects';
 import { ProjectInterface, useBimProjectsStore } from '../../../../stores';
 import './draggable.css';
@@ -16,21 +15,19 @@ interface Props {
 
 const OpenProject = ({ status, setStatus }: Props) => {
 
-    const { viewerC } = React.useContext(GlobalContext);
-    const textareaObj = useRef<TextBoxComponent>(null);
+    //const { viewerC } = React.useContext(GlobalContext);
+    //const textareaObj = useRef<TextBoxComponent>(null);
     const [selected, setSelected] = React.useState<any>({});
     const setActualProject = useBimProjectsStore(store=> store.setActualProject);
-    //const setProjects = useBimProjectsStore(store => store.setProjects);
     const dataProjects = useBimProjectsStore(store=> store.projects);
     let animationSettings: AnimationSettingsModel;
-    //const [projects, setProjects] = React.useState<any>([]);
     const projectSel = useRef<any>([]);
     //const setActualProject = useBimProjectsStore(store=> store.setActualProject);            
     //let buttonEle: HTMLButtonElement;
     //const [status, setStatus] = useState<boolean>(true);
     //const [display, setDisplay] = useState<string>('none');
 
-    const [img, setImg] = useState<string>('');
+    //const [img, setImg] = useState<string>('');
 
     animationSettings = { effect: 'None' };
 
@@ -40,14 +37,15 @@ const OpenProject = ({ status, setStatus }: Props) => {
 
     
     const selectProject = (): void => {
-        //console.log(projects.current)
         console.log(projectSel)
         //return;
         //const actu:any = projects.current.find((x:any) => x.id===selected?.nodeId);
         //console.log(actu)
         //setProjects([...projects.current]);
         //setActualProject(actu);
-        setActualProject( dataProjects.find ( (x:any) => x.id === projectSel.current?.nodeId )! as ProjectInterface );
+        const act = dataProjects.find ( (x:any) => x.id === projectSel.current?.nodeId );
+        setActualProject( act! as ProjectInterface );
+
         /*setActualProject({
             id:selected?.nodeId,
             name:selected?.nodeText,

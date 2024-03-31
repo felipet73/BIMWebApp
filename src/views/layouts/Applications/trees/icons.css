@@ -531,5 +531,7 @@ body.tailwind-dark .e-custom-card .e-avatar,
 }
 /* custom code end */
 
-
+.e-headertext{
+    font-size:2rem;
+}
 

@@ -1,7 +1,7 @@
 /* ListView position alignment */
 
 #listview_template.e-listview {
-    max-width: 400px;
+    max-width: 1400px;
     margin: auto;
     border-radius: 2px;
     height: 470px;

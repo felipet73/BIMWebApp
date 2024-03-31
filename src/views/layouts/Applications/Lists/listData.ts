@@ -295,8 +295,8 @@ export const dataSource = [
         id: '01',
         title: newsData[0].title,
         description: newsData[0].description,
-        text: 'Syncfusion Blog',
-        imgSrc: 'https://ej2.syncfusion.com/react/demos/src/listview/images/1.png', timeStamp: 'Syncfusion Blog - October 19, 2017',
+        text: 'Product Detail',
+        imgSrc: 'https://ej2.syncfusion.com/react/demos/src/listview/images/1.png', timeStamp: 'Product Detail - October 19, 2017',
         child: [{
                 id: '01_1', title: newsData[0].title, category: newsData[0].title, text: newsData[0].title,
                 imgSrc: '', heading: '', timeStamp: '', description: newsData[0].content
@@ -369,7 +369,9 @@ export const dataSource = [
             }]
     }
 ];
-export const groupDataSource = [
+
+
+/*export const groupDataSource = [
     { Name: 'WI-FI', content: 'Disabled', id: '1', class: 'wifi', category: 'Wireless & networks', order: 0 },
     { Name: 'Bluetooth', content: 'Disabled', id: '2', class: 'bluetooth', category: 'Wireless & networks', order: 0 },
     { Name: 'SIM cards', id: '3', content: 'AT&T', class: 'sim', category: 'Wireless & networks', order: 0 },
@@ -556,4 +558,4 @@ export const foodItems = [
     { text: 'Bacon', price: '$12', src: 'https://ej2.syncfusion.com/react/demos/src/listview/images/bacon.jpg', type: 'non-veg', description: 'Salt-cured pork made from various cuts, typically the belly or less fatty parts of the back eaten as a side dish', rating: 3 },
     { text: 'Chips', price: '$13', src: 'https://ej2.syncfusion.com/react/demos/src/listview/images/chips.jpg', type: 'veg', description: 'A small usually thin and flat piece (as of wood or stone) cut, struck, or flaked off also served as an appetizer', rating: 4 },
     { text: 'Noodles', price: '$11', src: 'https://ej2.syncfusion.com/react/demos/src/listview/images/noodles.jpg', type: 'veg', description: 'A cooked egg-and-flour paste, generally distinguished from pasta by its elongated ribbonlike form', rating: 3 },
-];
+];*/

@@ -1,43 +1,32 @@
+// TREE WITH AUTODESK CONSTRUCTION CLOUD DATASOURCE
 
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
 import { TreeGridComponent, ColumnsDirective, ColumnDirective, Selection, Filter, Sort, Reorder, Inject, ITreeData, RowDD, ContextMenu, Toolbar, Page, Edit } from '@syncfusion/ej2-react-treegrid';
 import { IFilter } from '@syncfusion/ej2-react-grids';
 import { ContextMenuItemModel, EditSettingsModel } from '@syncfusion/ej2-react-grids';
-//import { ActionEventArgs, getObject } from '@syncfusion/ej2-grids';
-//import { addClass, isNullOrUndefined } from '@syncfusion/ej2-base';
-//import { RatingComponent } from '@syncfusion/ej2-react-inputs';
 import { MenuEventArgs } from '@syncfusion/ej2-react-navigations'
-//import { getValue } from '@syncfusion/ej2-base';
 import { BeforeOpenCloseEventArgs } from '@syncfusion/ej2-react-inputs';
-import { tokenInterface, useGlobalStore } from '../../../../stores';
+import { tokenInterface, useBimProjectsStore, useGlobalStore } from '../../../../stores';
 import { AxiosAutodesk } from '../../../../config/axios';
-//import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
 import { DropDownButtonComponent, ItemModel } from '@syncfusion/ej2-react-splitbuttons';
 import { encode as base64_encode} from 'base-64';
-import './icons.css';
 import AddNewModel from '../../../Erp/Modals/bimprojects/AddNewModel';
-import NewProject from '../../../Erp/Modals/bimprojects/NewProject';
-import OpenProject from '../../../Erp/Modals/bimprojects/OpenProject';
-import { ChangeEventArgs } from '@syncfusion/ej2-react-dropdowns';
 import { ClickEventArgs } from '@syncfusion/ej2-navigations';
 import { GlobalContext } from '../../../../context/GlobalContext';
+import './icons.css';
 
 const TreeViewOptions = () => {
   const { modeSVF } = React.useContext( GlobalContext );
   const setUrn = useGlobalStore(state => state.setUrn);
   const urn = useGlobalStore(state => state.urn);
+  const setActualModel = useBimProjectsStore(state => state.setActualModel);
+  
   //const loading = useRef<boolean>(false);
   const [status, setStatus] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
 
     const selectedModel = useRef<any>(null);
-    const selectedMenu = useGlobalStore(state => state.selectedMenu);
-    const setSelectedMenu = useGlobalStore(state => state.setSelectedMenu);
-    const [status1, setStatus1] = React.useState<boolean>(false);
-    const [loading1, setLoading1] = React.useState<boolean>(true);
-
-    const [status2, setStatus2] = React.useState<boolean>(false);
     //const actualProject = useBimProjectsStore( store=>store.actualProject )
 
   const items: ItemModel[] = [
@@ -82,7 +71,14 @@ const TreeViewOptions = () => {
             if (e.item.properties.text === 'View-Open'){
               modeSVF.current=false;
               setUrn(base64_encode(props.included.id));
-              
+              setActualModel({
+                name:props.name,
+                file:props.name,
+                urn:base64_encode(props.included.id),
+                source:'Bim360',
+                isProjectModel:false,
+                //faltan otras propiedades de modelo
+              })
             }
               
             if (e.item.properties.text === 'Copy'){
@@ -110,88 +106,8 @@ const TreeViewOptions = () => {
     );
   };
 
-  /*const treegridTemplate = (props: any): any => {
-    if (props.gdp < 2) {
-    return (
-      <div className="statustemp e-lowgdp">
-        <span className="statustxt e-lowgdp">{props.gdp} %</span>
-      </div>
-    );
-    }
-    else{
-      return (
-        <div className="statustemp">
-          <span className="statustxt">{props.gdp} %</span>
-        </div>
-      );
-    }
-  };
-
-  const treeratingTemplate = (props: any): any => {
-    return (<div><RatingComponent value={props.rating} cssClass={'custom-rating'} readOnly={true}/></div>);
-  };
-
-  const treeunemployTemplate = (props: any): any => {
-    return (<div id="myProgress" className="pbar">
-    {props.unemployment <=4 ?
-            <div id="myBar" className="bar progressdisable" style={{ width: props.unemployment * 10 + "%" }}>
-      <div id="pbarlabel" className="barlabel">{props.unemployment + "%"}</div>
-    </div> :
-            <div id="myBar" className="bar" style={{ width: props.unemployment * 10 + "%" }}>
-      <div id="pbarlabel" className="barlabel">{props.unemployment + "%"}</div>
-    </div>}
-    </div>);
-  };
-
-  const treelocationTemplate = (props:any): any => {
-    var locationsrc = "src/treegrid/images/Map.png";
-    return (
-      <div id="coordinates">
-        <img src={locationsrc} className="e-image" alt={props.coordinates} />
-        <a target="_blank" href="https://www.google.com/maps/place/">
-          {props.coordinates}
-        </a>
-      </div>
-    );
-  };
-
-  const treeareaTemplate = (props:any): any => {
-    return (
-      <span>
-        {props.area} km<sup>2</sup>
-      </span>
-    );
-  };
-
-  const treezoneTemplate = (props:any): any => {
-    let classValue = "";
-    if (props.timezone.indexOf("-") !== -1) {
-      classValue = "negativeTimeZone";
-    }
-    return (
-      <div>
-        <img
-          src="src/treegrid/images/__Normal.png"
-          style={{ filter: "brightness(150%)" }}
-          className={classValue}
-        ></img>
-        <span style={{ paddingLeft: "7px" }}>{props.timezone}</span>)
-      </div>
-    );
-  };*/
-
-  /*const populationValue = (field: string, data: Object) => {
-    return data[field] / 1000000;
-  };*/
-
-  let flagtemplate: any = gridTemplate;
-  /*let gdptemplate: any = treegridTemplate;
-  let ratingtemplate: any = treeratingTemplate;
-  let unemploymentTemplate: any = treeunemployTemplate;
-  let locationtemplate: any = treelocationTemplate;
-  let areatemplate: any = treeareaTemplate;
-  let timezonetemplate: any = treezoneTemplate;*/
-
+    let flagtemplate: any = gridTemplate;
+  
   const provinceFilter: IFilter = {
     type: "Excel",
     itemTemplate: flagtemplate,
@@ -283,69 +199,8 @@ const TreeViewOptions = () => {
 
   const {access_token:token}:tokenInterface = useGlobalStore(state => state.token);
   const setToken = useGlobalStore(state => state.setToken);
-  //let token = '';
-	/*let idhub:[] = [];
-	let ArrProys:[]=[];
-	let ArrayFolders:[]=[];	
-
-	let idproy = '';
-	let nombreproy = '';
-	let urnfolder = '';*/
-
-	/*const ObtenerTokenAdsk = async () => {
-		//console.log('Se dispara solicitar Token ');
-		//if (auth.User) {
-		//let client = localStorage.getItem("ClientID");
-		let secret = localStorage.getItem("Secret");
-		const { data } = await AxiosAutodesk.post(
-			"/authentication/v1/authenticate",
-			qs.stringify({
-				client_id: client,
-				client_secret: secret,
-				grant_type: "client_credentials",
-				scope: "data:read data:write data:create data:search bucket:create bucket:read bucket:update bucket:delete",
-			}),
-			{
-				headers: {
-					"Content-Type": "application/x-www-form-urlencoded"
-				},
-			}
-		);
-		console.log(' Token obtenido de Autodesk');
-		console.log(data);
-		token = data.access_token;
-		return '1';
-	}*/
-
-
- /* const tremodels = [
-    {
-        name: 'Main',
-        children: [
-            { name: 'Folder', children: [{name:'Subfolder'}]  },
-            { name: 'New York', area: 783.8, capital: 'Albany', population: 8175133, gdp: 1.9,
-                timezone: 'UTC -5', unemployment: 3.9, coordinates: '40.7128° N, 74.0060° W' },
-            { name: 'New Mexico', area: 315194, capital: 'Santa Fe', population: 2088070, gdp: 0.1,
-                timezone: 'UTC -7', unemployment: 4.7, coordinates: '34.5199° N, 105.8701° W' },
-            { name: 'Alaska', area: 1717856, capital: 'Juneau', population: 297832, gdp: -0.5,
-                timezone: 'UTC -9', unemployment: 6.3, coordinates: '64.2008° N, 149.4937° W' }
-        ]
-    },
-    {
-        name: 'Greece', capital: 'Athens', area: 131957, population: 10783625, gdp: 1.5,
-        timezone: 'UTC +2.0', rating: 3, unemployment: 20.8, coordinates: '39.0742° N, 21.8243° E',
-        states: [
-            { name: 'Athens', area: 2929, population: 664046, gdp: 1,
-                timezone: 'UTC +2.0', unemployment: 7.7, coordinates: '37.9838° N, 23.7275° E' },
-            { name: 'Arcadia', capital: 'Tripoli', area: 28.83, population: 58799, gdp: 2.5,
-                timezone: 'UTC +2.0', unemployment: 3.0, coordinates: '34.1397° N, 118.0353° W' },
-            { name: 'Argolis', capital: 'Nafplio', area: 2154, population: 97044, gdp: 2.1,
-                timezone: 'UTC +2.0', unemployment: 6.2, coordinates: '37.6525° N, 22.8582° E' }
-        ]
-    },
-];*/
-
-  const [ tremodels, setTremodels] = React.useState([]);
+  
+	const [ tremodels, setTremodels] = React.useState([]);
   const auxModels:any = React.useRef([]);
  
 	useEffect(	() => {
@@ -573,24 +428,7 @@ const TreeViewOptions = () => {
 	}, [])
 
 
-
-
-
-  useEffect(() => {
-    if (selectedMenu==='NewProject') {
-      setStatus1(true)
-      setSelectedMenu('');
-    }
-    if (selectedMenu==='OpenProject') {
-      setStatus2(true)
-      setSelectedMenu('');
-    }
-    
-  }, [selectedMenu])
-
-
-
-  const modes: { [key: string]: Object }[] = [
+  /*const modes: { [key: string]: Object }[] = [
     { text: "Parent", value: "Parent" },
     { text: "Child", value: "Child" },
     { text: "Both", value: "Both" },
@@ -601,7 +439,7 @@ const TreeViewOptions = () => {
     let mode: any = sel.value.toString();
     treegridObj.current?.search("");
     treegridObj.current!.searchSettings.hierarchyMode = mode;
-  };
+  };*/
 
   const toolbarOptions: any = [
     "Search",
@@ -615,15 +453,10 @@ const TreeViewOptions = () => {
     }
   };
 
-
-
   return (
     <div className="control-pane">
       {status && <AddNewModel selectedModel={selectedModel} status={status} setStatus={setStatus} loading={loading} setLoading={setLoading}/>}
-      {status1 && <NewProject status={status1} setStatus={setStatus1} loading={loading1} setLoading={setLoading1}/>}
-      {status2 && <OpenProject status={status2} setStatus={setStatus2} />}
       <div className="control-section">
-        
         <TreeGridComponent
           ref={treegridObj}
           dataSource={tremodels}

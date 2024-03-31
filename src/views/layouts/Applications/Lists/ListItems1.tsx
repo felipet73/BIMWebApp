@@ -4,6 +4,8 @@
 
 import { ListViewComponent } from '@syncfusion/ej2-react-lists';
 import { dataSource } from './listData';
+import { TooltipComponent, Position } from '@syncfusion/ej2-react-popups';
+import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
 import './template.css';
 
 const ListItems1 = () => {
@@ -90,8 +92,26 @@ const ListItems1 = () => {
    return (
        <div className='control-pane'>
            <div className='control-section'>
-               {/* ListView element */}
-               <ListViewComponent id='listview_template' dataSource={dataSource} headerTitle='Syncfusion Blog' showHeader={true} cssClass = 'e-list-template' actionComplete={onComplete.bind(this)} template={listTemplate as any}></ListViewComponent>
+           <div className="control-section button-group-container" style={{position: 'relative',zIndex: 9,marginLeft: '15px', marginTop:'0px'}}>
+                <div className="button-group-section">
+                    <div id="button-group-control">
+                        <div className="row">
+                            <div id="bgicon" className="e-btn-group">
+                                <TooltipComponent content={`Save actual `} position={('TopCenter' as Position)} tabIndex={0} style={{ display: 'block', position: 'relative', left: 'calc( 50% - 110px)', top: '45%' }}>
+                                <ButtonComponent iconCss='e-icons e-save' style={{ marginLeft:'15px' }}></ButtonComponent>
+                                </TooltipComponent>
+                                <TooltipComponent content="Save actual view" position={('TopCenter' as Position)} tabIndex={0} style={{ display: 'block', position: 'relative', left: 'calc( 50% - 105px)', top: '45%' }}>
+                                <ButtonComponent iconCss='bg-icons e-btngrp-star'></ButtonComponent>
+                                </TooltipComponent>                                  
+                                <TooltipComponent content="Save actual view" position={('TopCenter' as Position)} tabIndex={0} style={{ display: 'block', position: 'relative', left: 'calc( 50% - 100px)', top: '45%' }}>
+                                <ButtonComponent iconCss='bg-icons e-btngrp-download'></ButtonComponent>
+                                </TooltipComponent>                                  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+               <ListViewComponent id='listview_template' dataSource={dataSource} headerTitle='Product List' showHeader={true} cssClass = 'e-list-template' actionComplete={onComplete.bind(this)} template={listTemplate as any} style={{ height:'400px' }} ></ListViewComponent>
            </div>
        </div>
    )

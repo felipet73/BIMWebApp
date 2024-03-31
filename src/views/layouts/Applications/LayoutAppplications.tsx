@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
 import { ToastComponent } from '@syncfusion/ej2-react-notifications';
-import { ListViewComponent } from '@syncfusion/ej2-react-lists';
+//import { ListViewComponent } from '@syncfusion/ej2-react-lists';
 import GeneratorMenu from '../../CodeGenerator/GeneratorMenu';
 import ErpMenu from '../../Erp/ErpMenu';
 import { SplitterComponent, PanesDirective, PaneDirective } from '@syncfusion/ej2-react-layouts';
 import SideOptions from './SideOptions';
-import { useGlobalStore, useMenuStore, useOptionModelStore, useViewerIFCStore } from '../../../stores';
+import { useGlobalStore, useOptionModelStore, useViewerIFCStore } from '../../../stores';
 import ViewerMenu from '../../viewers/VieverMenu';
 //import { dataSource } from './Lists/listData';
 import { FileMenuEventArgs, LauncherClickEventArgs } from '@syncfusion/ej2-react-ribbon';
@@ -18,7 +18,7 @@ import { GlobalContext } from '../../../context/GlobalContext';
 //import { CurrentAction } from '@syncfusion/ej2-react-schedule';
 //import NewProject from '../../Erp/Modals/bimprojects/NewProject';
 import './default.css';
-import { IFCContext } from '../../viewers/ViewerIFC/context/ifcviewer/IFCContext';
+//import { IFCContext } from '../../viewers/ViewerIFC/context/ifcviewer/IFCContext';
 
 
 /*interface Prps {
@@ -39,6 +39,9 @@ const LayoutAppplications = () => {
     const renderizar = React.useRef(true);
     const setOption = useGlobalStore(state => state.setOption);
     const setSelectedMenu = useGlobalStore(state => state.setSelectedMenu);
+    //const modeIssues = useViewerStore(state => state.modeIssues);
+    //const setModeIssues = useViewerStore(state => state.setModeIssues);
+
     const { viewerC } = React.useContext( GlobalContext );
     let panelR = useRef<SplitterComponent>(null);
 
@@ -114,7 +117,8 @@ const LayoutAppplications = () => {
         if (args === 'Planning -> Kanban') SetOptionModel('Kanban1');
         if (args === 'Planning -> Schedulle') SetOptionModel('Schedulle');
 
-        if (args === 'Cut') {
+        if (args === 'Issues') {
+
             //setOption('Viewer');
             //renderizar.current = true;
             //setFileOptions([]);

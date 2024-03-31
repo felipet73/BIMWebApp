@@ -252,27 +252,6 @@ const AddNewModel = ({ selectedModel, status, setStatus, loading, setLoading }: 
             console.log('Response error catch ', error);
         }
         setStatus(false);
-        /*const NewModel:ModelInterface={
-            //id:string;
-            name:name;
-            dateCreated:new Date();
-            file:selectedModel.current.attributes.name;
-            descripcion:description;
-            image:string;
-            urn:selectedModel.current.id;
-        }*/
-
-        
-        
-        /*export interface ProjectInterface {
-            id:string;
-            name:string;
-            dateCreated:Date;
-            descripcion:string;
-            image:string;
-            models:ModelInterface[] | [];
-        }*/
-
     }
 
 
