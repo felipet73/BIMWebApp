@@ -13,6 +13,7 @@ import NewProject from '../../../Erp/Modals/bimprojects/NewProject';
 import OpenProject from '../../../Erp/Modals/bimprojects/OpenProject';
 import { encode as base64_encode} from 'base-64';
 import './icons.css';
+import NewIssue from '../../../Erp/Modals/bimprojects/NewIssue';
 //import Logo from '/assets/svg/oops.svg';
 
 const items: ItemModel[] = [
@@ -79,6 +80,7 @@ const TreeViewProject1 = () => {
     const [data, setData] = React.useState<any>([]);
     const actualProyect = useBimProjectsStore(store => store.actualProject);
     const setActualModel = useBimProjectsStore(state => state.setActualModel);
+    const [status, setStatus] = React.useState<boolean>(false);
     const [status1, setStatus1] = React.useState<boolean>(false);
     const [loading1, setLoading1] = React.useState<boolean>(true);
     const [status2, setStatus2] = React.useState<boolean>(false);
@@ -244,6 +246,7 @@ const TreeViewProject1 = () => {
                       setUrn(base64_encode(mainMod.urn));
                 }else{
                     setActualModel({
+                        id:actualProyect?.models[0]?.id,
                         name: actualProyect?.models[0]?.name,
                         file:actualProyect?.models[0]?.file,
                         urn:base64_encode(actualProyect?.models[0]?.urn),
@@ -271,11 +274,17 @@ const TreeViewProject1 = () => {
             setStatus2(true)
             setSelectedMenu('');
         }
+        if (selectedMenu === 'AddNewComment') {
+            setStatus(true)
+            setSelectedMenu('');
+        }
+
     }, [selectedMenu])
 
 
     return (
         <>
+            {status && <NewIssue status={status} setStatus={setStatus} />}
             {status1 && <NewProject status={status1} setStatus={setStatus1} />}
             {status2 && <OpenProject status={status2} setStatus={setStatus2} />}
             {actualProyect && actualProyect.name !== '' ?

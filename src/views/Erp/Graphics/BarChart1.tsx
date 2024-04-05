@@ -3,6 +3,7 @@
  */
 import { Chart3DComponent, Chart3DSeriesCollectionDirective, Chart3DSeriesDirective, Inject, ChartTheme, ColumnSeries3D, Category3D, Tooltip3D, Chart3DLoadedEventArgs, Legend3D, Highlight3D } from '@syncfusion/ej2-react-charts';
 import { Browser } from '@syncfusion/ej2-base';
+import { useEffect } from 'react';
 export let data1: any[] = [{ x: 'Jamesh', y: 1 }, { x: 'Michael', y: 2 }, { x: 'John', y: 2 }, { x: 'Jack', y: 1 }, { x: 'Lucas', y: 1 }];
 export let data2: any[] = [{ x: 'Jamesh', y: 4 }, { x: 'Michael', y: 3 }, { x: 'John', y: 4 }, { x: 'Jack', y: 2 }, { x: 'Lucas', y: 3 }];
 export let data3: any[] = [{ x: 'Jamesh', y: 5 }, { x: 'Michael', y: 4 }, { x: 'John', y: 5 }, { x: 'Jack', y: 5 }, { x: 'Lucas', y: 6 }];
@@ -17,6 +18,18 @@ const SAMPLE_CSS = `
  * Column Side placment sample
  */
 const BarChart1 = () => {
+
+
+    useEffect(() => {
+        const elem = document.querySelector(".ajusta");
+        elem?.classList.remove("ajusta");
+        console.log('elem', elem);
+        if (elem){
+            const hijo = elem?.firstChild as HTMLDivElement;
+            hijo!.setAttribute('style', 'height: 100%');    
+        }
+            
+        }, []);
 
     const onChartLoad = (args: Chart3DLoadedEventArgs): void => {
         let chart: Element = document.getElementById('charts') as Element;

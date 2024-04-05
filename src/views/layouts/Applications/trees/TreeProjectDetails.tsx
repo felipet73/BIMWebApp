@@ -7,11 +7,13 @@ import { IFilter } from '@syncfusion/ej2-react-grids';
 import { ContextMenuItemModel } from '@syncfusion/ej2-react-grids';
 import { MenuEventArgs } from '@syncfusion/ej2-react-navigations'
 import { BeforeOpenCloseEventArgs } from '@syncfusion/ej2-react-inputs';
-import { useBimProjectsStore, useViewerStore } from '../../../../stores';
+import { FolderViewInterface, useBimProjectsStore, useGlobalStore, useViewerStore } from '../../../../stores';
 import { DropDownButtonComponent, ItemModel } from '@syncfusion/ej2-react-splitbuttons';
 import { ClickEventArgs } from '@syncfusion/ej2-navigations';
 import { AnyProject } from './TreeViewProject1';
 import './icons.css';
+import Axios from '../../../../config/axios';
+import { GlobalContext } from '../../../../context/GlobalContext';
 
 
 
@@ -20,8 +22,8 @@ const TreeProjectDetails = () => {
 
   const modeDetails = useViewerStore(state => state.modeDetails);
   const actualProyect = useBimProjectsStore(store => store.actualProject);
-  
-
+  const { viewerC } = React.useContext(GlobalContext);
+  const loggedUser = useGlobalStore( state => state.loggedUser);    
 
 
   const items: ItemModel[] = [
@@ -51,17 +53,28 @@ const TreeProjectDetails = () => {
       <>
         <div style={{ display: "inline" }}>
           <div style={{ display: "contents" }}>
+            {props.type === 'view' ?
             <img
+              className="e-image"
+              src={`${process.env.REACT_APP_BASE_URL}images/views/${props?.image}`}
+              alt={flagIconLocation}
+              style={{ width: '75px', height: '50px', marginRight: '10px' }}
+            ></img>:
+              <img
               className="e-image"
               src={"/assets/icons/" + props.type + ".png"}
               alt={flagIconLocation}
               style={{ width: '25px', height: '25px', marginRight: '10px' }}
-            ></img>
+            ></img>            
+            }
 
             {props.name}
-            {props.type === 'items' &&
+            {props.type === 'items' || props.type === 'view'  &&
               <DropDownButtonComponent items={items} iconCss='' style={{ position: 'absolute', right: '5px', marginTop: '-5px' }} select={(e) => {
                 if (e.item.properties.text === 'View-Open') {
+                  console.log(props.ids)
+                  viewerC.current.isolate(props.ids.map((x:string) => parseInt(x) ));
+                  viewerC.current.fitToView(props.ids.map((x:string) => parseInt(x) ));
                 }
 
                 if (e.item.properties.text === 'Copy') {
@@ -200,32 +213,77 @@ const TreeProjectDetails = () => {
     
     
     if (modeDetails === 'ProjectViews') {
-      auxData.current = [
-        {
-          id: '1', name: actualProyect.name + ' Views', type: 'acount',
-          children: [
-            ...actualProyect.models.map((x:any)=>{
-              return (
-                {
-                  name:x.name,
-                  type:'category',
-                  children:[]
-                }
-              )
-            })
 
-            /*{
-              
-              
-              name: 'My Views', type: 'folders',
-              children: [
-                { name: 'View 2', type: 'items', urn: '/0/0.svf', children: [] },
-                { name: 'View 3', type: 'items', urn: '/svf/11 Jay Street (1)/11 Jay Street/Resource/3D_View/3D/3D.svf', children: [] },
-              ]
-            }*/
-          ]
-        }
-      ];
+      const ObteinDataFolderViews = (async ()=>{
+        //setAllLevels(null);
+        //await ObtenerTokenAdsk();
+        const { data } = await Axios.get("/folderviews/" + actualProyect.id);
+        console.log(' Folders Folderviews', data);
+        
+        if (data.folderviews.length===0){
+          let FolderView:FolderViewInterface[]=[];
+          for (let i=0; i< actualProyect.models.length; i++){
+
+            FolderView[i] = {
+              name: "Default",
+              description: 'Default folder',
+              datecreated: new Date(),
+              id: '',
+              model: actualProyect.models[i].id,
+              project: actualProyect.id,
+              to: [],
+              user: loggedUser.id,
+              views:[],
+              };
+  
+              let data1 = await Axios.post("/folderviews/", FolderView[i], {headers:{Authorization:`Bearer ${localStorage.getItem("Token3Dev")?.replaceAll('"','')}`}})
+              console.log('Updated FolderView ---->>>>>', data1.data);
+              FolderView[i] = data1.data;
+
+          }
+
+
+        auxData.current = [
+          {
+            id: actualProyect.id, name: actualProyect.name + ' Views', type: 'acount',
+            children: [
+              ...actualProyect.models.map((x:any, i)=>{
+
+                return (
+                  {
+                    name:x.name,
+                    type:'category',
+                    children: FolderView.filter( (y:any) => y.model===x.id).map( (folder:any) => ( { ...folder, type:'folders', children: [ ...folder.views.map( (U:any) => ({...U,type:'view'}) ) ] } ) )
+                  }
+                )
+              })
+            ]
+          }
+        ]
+      }else{
+        auxData.current = [
+          {
+            id: actualProyect.id, name: actualProyect.name + ' Views', type: 'acount',
+            children: [
+              ...actualProyect.models.map((x:any)=>{
+                return (
+                  {
+                    name:x.name,
+                    type:'category',
+                    children: data.folderviews.filter( (y:any) => y.model===x.id).map( (folder:any) => ( { ...folder, type:'folders', children: [ ...folder.views.map( (U:any) => ({...U,type:'view'}) ) ] } ) )
+                  }
+                )
+              })
+            ]
+          }
+        ]
+      }
+
+      })();
+
+
+
+      
     }
     if (modeDetails === 'ProjectLists') {
       auxData.current = [
@@ -252,7 +310,7 @@ const TreeProjectDetails = () => {
 
 
 
-  }, [modeDetails])
+  }, [modeDetails, actualProyect])
 
 
   /*const modes: { [key: string]: Object }[] = [

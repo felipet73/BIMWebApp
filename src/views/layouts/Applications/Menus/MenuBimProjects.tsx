@@ -3,8 +3,9 @@ import { Ribbon, RibbonComponent, RibbonTabsDirective, RibbonTabDirective, Ribbo
 import { RibbonFileMenu, RibbonItemSize, Inject, FileMenuEventArgs, LauncherClickEventArgs, RibbonGroupButtonSelection } from '@syncfusion/ej2-react-ribbon';
 import { ItemModel } from '@syncfusion/ej2-react-splitbuttons';
 //import { MenuItemModel } from '@syncfusion/ej2-react-navigations';
-import { useBimProjectsStore, useMenuStore, useViewerStore } from '../../../../stores';
+import { useBimProjectsStore, useGlobalStore, useMenuStore, useViewerStore } from '../../../../stores';
 import { GlobalContext } from '../../../../context/GlobalContext';
+import { styles } from '../../../viewers/Tabs/DocumentOptions/data';
 
 
 interface PrpsBimMenu {
@@ -20,18 +21,20 @@ export const MenuBimProjects = ({updateContent,fileSelect,launchClick }:PrpsBimM
     const actualModel = useBimProjectsStore(state => state.actualModel);
     let ribbonObj = useRef<RibbonComponent>(null);
     const actualProject = useBimProjectsStore(store=>store.actualProject);
+    
+    
     const fileOptions = useMenuStore(state => state.fileOptions);
     const setFileOptions = useMenuStore(state => state.setFileOptions);
     //const viewer = useGlobalStore(state => state.viewer);
     const pasteOptions: ItemModel[] = [{ text: "Keep Source Format" }, { text: "Merge Format" }, { text: "Keep Text Only" }];
 
-    const modeIssues = useViewerStore(state => state.modeIssues);
-    const setModeIssues = useViewerStore(state => state.setModeIssues);
+    //const modeIssues = useViewerStore(state => state.modeIssues);
+    //const setModeIssues = useViewerStore(state => state.setModeIssues);
 
-    const { viewerC, onItemHovering, onModelLoaded1, init22, removeEv, onItemClick } = React.useContext( GlobalContext );
+    const { viewerC, onItemHovering, onModelLoaded1, init22, removeEv, onItemClick, addEv, modeIssues } = React.useContext( GlobalContext );
 
-    const [modeIss, setModeIss] = useState(modeIssues);
-
+    //const [modeIss, setModeIss] = useState(modeIssues);
+    const setSelectedMenu = useGlobalStore(state => state.setSelectedMenu);
     /*useEffect(() => {
       console.log('hay cambio en modes', modeIssues)
         setTimeout(() => {
@@ -61,9 +64,11 @@ export const MenuBimProjects = ({updateContent,fileSelect,launchClick }:PrpsBimM
     //const fontSize: string[] = ["8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72", "96"];
     //const fontStyle: string[] = ["Algerian", "Arial", "Calibri", "Cambria", "Cambria Math", "Courier New", "Candara", "Georgia", "Impact", "Segoe Print", "Segoe Script", "Segoe UI", "Symbol", "Times New Roman", "Verdana", "Windings"];
 
+    const showMarks: ItemModel[] = [{ text: "None" }, { text: "Issues" }, { text: "Comments" }, { text: "Requirements" }];
+
     const viewOptions: ItemModel[] = [{ text: "Budget" }, { text: "Budget excel" }];
     const graphOptions: ItemModel[] = [{ text: "3DBar Advance Comparative" }, { text: "TimeLine" }, { text: "Gr1" }, { text: "Gr2" }, { text: "Gr3" }];
-    const planningOptions: ItemModel[] = [{ text: "Gantt" }, { text: "Schedulle" } , { text: "Kanban" }];
+    const planningOptions: ItemModel[] = [{ text: "Gantt" }, { text: "Schedulle" } , { text: "Kanban" }, { text: "IssueDetail" }];
 
     let isPasteDisabled: boolean = true;
     const enablePaste = () => {
@@ -267,59 +272,92 @@ export const MenuBimProjects = ({updateContent,fileSelect,launchClick }:PrpsBimM
                                             <RibbonCollectionsDirective>
                                                 <RibbonCollectionDirective>
                                                     <RibbonItemsDirective>
-                                                        <RibbonItemDirective type="CheckBox" checkBoxSettings={{ label: "Issues", checked: modeIssues.issues, 
+
+                                                        <RibbonItemDirective type="SplitButton" disabled={false} id="viewbtb" allowedSizes={RibbonItemSize.Large}
+                                                            splitButtonSettings={{ iconCss: "e-icons e-table", items: showMarks, content: "Show marks", select: async(args) => { 
+                                                                
+                                                                updateContent("Marks -> " + args.item.text); 
+                                                                const DataVizCore = Autodesk.DataVisualization.Core;
+                                                                
+                                                                if (args.item.text==='None'){
+                                                                    modeIssues.current='none';
+                                                                    viewerC.current.removeEventListener(DataVizCore.MOUSE_HOVERING, onItemHovering);
+                                                                    viewerC.current.removeEventListener(DataVizCore.MOUSE_CLICK, onItemClick);
+                                                                    const dataVizExt = viewerC.current.getExtension("Autodesk.DataVisualization");
+                                                                    dataVizExt.removeAllViewables();
+                                                                    removeEv(viewerC.current);
+
+                                                                }
+                                                                
+                                                                if (args.item.text==='Issues'){
+                                                                    if (modeIssues.current!=='Issues'){
+                                                                        modeIssues.current='Issues';
+                                                                        removeEv(viewerC.current);
+                                                                        await onModelLoaded1(viewerC.current);
+                                                                        init22(viewerC.current);
+                                                                        viewerC.current.removeEventListener(DataVizCore.MOUSE_HOVERING, onItemHovering);
+                                                                        viewerC.current.addEventListener(DataVizCore.MOUSE_HOVERING, onItemHovering);
+                                                                        viewerC.current.removeEventListener(DataVizCore.MOUSE_CLICK, onItemClick);
+                                                                        viewerC.current.addEventListener(DataVizCore.MOUSE_CLICK, onItemClick);
+                                                                        //setTimeout(()=>{setModeIssues({...modeIssues, issues:false})},100)
+                                                                    }
+                                                                    updateContent("Issues");
+                                                                }
+
+                                                                if (args.item.text==='Comments'){
+                                                                    if (modeIssues.current!=='Comments'){
+                                                                        modeIssues.current='Comments';
+                                                                        removeEv(viewerC.current);
+                                                                        await onModelLoaded1(viewerC.current);
+                                                                        init22(viewerC.current);
+                                                                        viewerC.current.removeEventListener(DataVizCore.MOUSE_HOVERING, onItemHovering);
+                                                                        viewerC.current.addEventListener(DataVizCore.MOUSE_HOVERING, onItemHovering);
+                                                                        viewerC.current.removeEventListener(DataVizCore.MOUSE_CLICK, onItemClick);
+                                                                        viewerC.current.addEventListener(DataVizCore.MOUSE_CLICK, onItemClick);
+                                                                        //setTimeout(()=>{setModeIssues({...modeIssues, issues:false})},100)
+                                                                    }
+                                                                    updateContent("Issues");
+                                                                }
+                                                                                                                
+                                                                if (args.item.text==='Requirements'){
+                                                                    if (modeIssues.current!=='Requirements'){
+                                                                        modeIssues.current='Requirements';
+                                                                        removeEv(viewerC.current);
+                                                                        await onModelLoaded1(viewerC.current);
+                                                                        init22(viewerC.current);
+                                                                        viewerC.current.removeEventListener(DataVizCore.MOUSE_HOVERING, onItemHovering);
+                                                                        viewerC.current.addEventListener(DataVizCore.MOUSE_HOVERING, onItemHovering);
+                                                                        viewerC.current.removeEventListener(DataVizCore.MOUSE_CLICK, onItemClick);
+                                                                        viewerC.current.addEventListener(DataVizCore.MOUSE_CLICK, onItemClick);
+                                                                        //setTimeout(()=>{setModeIssues({...modeIssues, issues:false})},100)
+                                                                    }
+                                                                    updateContent("Issues");
+                                                                }
+                                                                
+                                                                
+                                                                
+                                                                }, click: () => { updateContent("Marks"); } }}>
+                                                        </RibbonItemDirective>
+                                                    
+
+                                                        <RibbonItemDirective type="CheckBox" checkBoxSettings={{ label: "Hide Finished", checked: false, 
                                                         change: async(e) => { 
                                                             //setModeIss({...modeIss,issues:e.checked});
-                                                            console.log('Hay cambio de estado', modeIss.issues, e)
-                                                            const DataVizCore = Autodesk.DataVisualization.Core;
-                                                            if (modeIssues.issues===true){
-                                                                viewerC.current.removeEventListener(DataVizCore.MOUSE_HOVERING, onItemHovering);    
-                                                                viewerC.current.removeEventListener(DataVizCore.MOUSE_CLICK, onItemClick);
-                                                                
-                                                        
-                                                                const dataVizExt = viewerC.current.getExtension("Autodesk.DataVisualization");
-                                                                dataVizExt.removeAllViewables();
-                                                                removeEv(viewerC.current);
-                                                                setTimeout(()=>{setModeIssues({...modeIssues, issues:false})},100)
-                                                            }else{
-                                                                removeEv(viewerC.current);
-                                                                await onModelLoaded1(viewerC.current);
-                                                                init22(viewerC.current);
-                                                                viewerC.current.removeEventListener(DataVizCore.MOUSE_HOVERING, onItemHovering);
-                                                                viewerC.current.addEventListener(DataVizCore.MOUSE_HOVERING, onItemHovering);
-                                                                viewerC.current.removeEventListener(DataVizCore.MOUSE_CLICK, onItemClick);
-                                                                viewerC.current.addEventListener(DataVizCore.MOUSE_CLICK, onItemClick);
-
-                                                                setTimeout(()=>{setModeIssues({...modeIssues, issues:true})},100)
-                                                            }
-                                                                                                            
-                                                            updateContent("Issues"); } 
+                                                            
+                                                            //console.log('Hay cambio de estado', modeIss.issues, e)
+                                                             } 
                                                             }}>
-                                                        </RibbonItemDirective>
-                                                        <RibbonItemDirective type="CheckBox" checkBoxSettings={{ label: "Comments", checked: modeIss.comments, change: () => { 
-                                                            
-                                                            if (modeIssues.comments===true){
-                                                                setModeIssues({...modeIssues, comments:false})
-                                                                
-                                                            }else{
-                                                                setModeIssues({...modeIssues, comments:true})
-                                                            }
-                                                            
-                                                            updateContent("Comments"); 
-                                                            } }}>
-                                                        </RibbonItemDirective>
-                                                        <RibbonItemDirective type="CheckBox" checkBoxSettings={{ label: "Requiremets", checked: modeIss.requirements, change: () => { 
 
-                                                            if (modeIssues.requirements===true){
-                                                                setModeIssues({...modeIssues, requirements:false})
-                                                                
-                                                            }else{
-                                                                setModeIssues({...modeIssues, requirements:true})
-                                                            }
-                                                            
-                                                            updateContent("Messages"); 
+                                                        </RibbonItemDirective>
+
+                                                        <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "sf-icon-read", content: "Add new Comment", clicked: () => { 
+                                                            updateContent("AddNew"); 
+                                                            //addEv(viewerC.current)
+                                                            setSelectedMenu('AddNewComment');
                                                             } }}>
                                                         </RibbonItemDirective>
+
+                                                        
                                                     </RibbonItemsDirective>
                                                 </RibbonCollectionDirective>
                                             </RibbonCollectionsDirective>
@@ -328,8 +366,6 @@ export const MenuBimProjects = ({updateContent,fileSelect,launchClick }:PrpsBimM
                                             <RibbonCollectionsDirective>
                                                 <RibbonCollectionDirective>
                                                     <RibbonItemsDirective>
-                                                        <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "sf-icon-read", content: "Read Mode", clicked: () => { updateContent("Read Mode"); } }}>
-                                                        </RibbonItemDirective>
                                                         <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "e-icons e-print", content: "Print Layout", clicked: () => { updateContent("Print Layout"); } }}>
                                                         </RibbonItemDirective>
                                                         <RibbonItemDirective type="Button" buttonSettings={{ iconCss: "sf-icon-web-layout", content: "Web Layout", clicked: () => { updateContent("Web Layout"); } }}>

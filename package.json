@@ -27,6 +27,7 @@
     "@syncfusion/ej2-react-popups": "^24.1.46",
     "@syncfusion/ej2-react-progressbar": "^24.2.9",
     "@syncfusion/ej2-react-ribbon": "^24.2.8",
+    "@syncfusion/ej2-react-richtexteditor": "^25.1.38",
     "@syncfusion/ej2-react-schedule": "^24.2.8",
     "@syncfusion/ej2-react-splitbuttons": "^24.1.46",
     "@syncfusion/ej2-react-spreadsheet": "^24.2.9",
@@ -43,6 +44,7 @@
     "base-64": "^1.0.0",
     "bim-fragment": "^1.4.2",
     "client-zip": "^2.4.4",
+    "codemirror": "^5.65.16",
     "forge-apis": "^0.9.9",
     "forge-dataviz-iot-data-modules": "^0.1.11",
     "forge-dataviz-iot-react-components": "^0.1.17",
@@ -91,6 +93,7 @@
     "@types/babel__core": "^7.20.5",
     "@types/babel-generator": "^6.25.8",
     "@types/base-64": "^1.0.2",
+    "@types/codemirror": "^5.60.15",
     "@types/jquery": "^3.5.29",
     "@types/react-router-dom": "^5.3.2",
     "@types/three": "^0.161.2"

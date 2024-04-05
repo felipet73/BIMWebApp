@@ -1,12 +1,26 @@
 import { ChartComponent, SeriesCollectionDirective, AxesDirective, AxisDirective, RowDirective, RowsDirective, SeriesDirective, Inject, CandleSeries, Category, Tooltip, ILoadedEventArgs, DateTime, Zoom, Logarithmic, StripLinesDirective, StripLineDirective, Crosshair, LineSeries, StripLine, MacdIndicator, ColumnSeries, ChartTheme, IndicatorsDirective, IndicatorDirective, Legend } from '@syncfusion/ej2-react-charts';
 import { chartValues } from './dataChar2';
 import { Browser } from '@syncfusion/ej2-base';
+import { useEffect } from 'react';
 
 const SAMPLE_CSS = `
     .control-fluid {
         padding: 0px !important;
     }`;
 const BarChart2 = () => {
+
+
+    useEffect(() => {
+        const elem = document.querySelector(".ajusta");
+        elem?.classList.remove("ajusta");
+        console.log('elem', elem);
+        if (elem){
+            const hijo = elem?.firstChild as HTMLDivElement;
+            hijo!.setAttribute('style', 'height: 100%');    
+        }
+            
+        }, []);
+
 
     const onChartLoad = (args: ILoadedEventArgs): void => {
         let chart: Element = document.getElementById('charts2') as Element;
@@ -18,11 +32,11 @@ const BarChart2 = () => {
         args.chart.theme = (selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1)).replace(/-dark/i, "Dark").replace(/contrast/i,'Contrast') as ChartTheme;
     };
     return (
-        <div className='control-pane'>
+        <div className='control-pane' style={{ height:'100%' }}>
             <style>{SAMPLE_CSS}</style>
-            <div className='control-section'>
+            <div className='control-section' style={{ height:'100%' }}>
                 <ChartComponent id='charts2' load={load.bind(this)} style={{ textAlign: "center" }} primaryXAxis={{ valueType: 'DateTime', majorGridLines: { width: 0 }, zoomFactor: 0.2, zoomPosition: 0.6, crosshairTooltip: { enable: true } }} primaryYAxis={{ title: 'Price', labelFormat: '${value}', plotOffset: 25, minimum: 50, maximum: 170, interval: 30, rowIndex: 1, opposedPosition: true, lineStyle: { width: 0 } }} tooltip={{ enable: true, shared: true }} width={Browser.isDevice ? '100%' : '75%'} crosshair={{ enable: true, lineType: 'Vertical' }} chartArea={{ border: { width: 0 } }} zoomSettings={{ enableSelectionZooming: true, mode: 'X', enablePan: true }} 
-                    title='Planned vs Executed' legendSettings={{visible: false}} loaded={onChartLoad.bind(this)}>
+                    title='Planned vs Executed 1' legendSettings={{visible: false}} loaded={onChartLoad.bind(this)}>
                     <Inject services={[CandleSeries, Category, Tooltip, DateTime,Legend, Zoom, Logarithmic, Crosshair, LineSeries, MacdIndicator, StripLine, ColumnSeries]} />
                     <RowsDirective>
                         <RowDirective height={'40%'} />

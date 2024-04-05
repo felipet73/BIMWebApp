@@ -116,6 +116,7 @@ const LayoutAppplications = () => {
         if (args === 'Planning -> Gantt') SetOptionModel('Gantt');
         if (args === 'Planning -> Kanban') SetOptionModel('Kanban1');
         if (args === 'Planning -> Schedulle') SetOptionModel('Schedulle');
+        if (args === 'Planning -> IssueDetail') SetOptionModel('IssueDetail');
 
         if (args === 'Issues') {
 

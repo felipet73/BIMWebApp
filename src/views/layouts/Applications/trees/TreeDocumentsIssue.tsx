@@ -18,7 +18,7 @@ interface Props {
   selectedFolderView:React.MutableRefObject<any>;
 }
 
-const TreeFolders = ({selectedFolderView}:Props) => {
+const TreeDocumentsIssue = () => {
 
   const modeDetails = useViewerStore(state => state.modeDetails);
   const actualProyect = useBimProjectsStore(store => store.actualProject);
@@ -187,7 +187,7 @@ const TreeFolders = ({selectedFolderView}:Props) => {
   const [title, setTitle] = React.useState('');
   const auxData: any = React.useRef([]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     console.log('modeDetails', modeDetails);
     console.log('modeDetails', actualProyect);
     if (!actualProyect) return;
@@ -235,7 +235,7 @@ const TreeFolders = ({selectedFolderView}:Props) => {
                 })
               ]
             }
-          ];*/
+          ];
   
   
         })();
@@ -272,7 +272,7 @@ const TreeFolders = ({selectedFolderView}:Props) => {
 
 
 
-  }, [modeDetails])
+  }, [modeDetails])*/
 
 
   /*const modes: { [key: string]: Object }[] = [
@@ -290,7 +290,7 @@ const TreeFolders = ({selectedFolderView}:Props) => {
 
   const toolbarOptions: any = [
     "Search",
-    { text: "Option", tooltipText: "my option", id: "option" },
+    { text: "", prefixIcon:'e-icons e-image',  tooltipText: "Take model photo", id: "option" },
   ];
 
   const toolbarClick = (args: ClickEventArgs): void => {
@@ -326,7 +326,7 @@ const TreeFolders = ({selectedFolderView}:Props) => {
               toolbarClick={toolbarClick.bind(this)}
               rowSelected={(e:any)=>{
                 console.log('Selected row ->>', e);
-                selectedFolderView.current=e?.data;
+                //selectedFolderView.current=e?.data;
               }}
             //treeColumnIndex={1}
             >
@@ -347,4 +347,4 @@ const TreeFolders = ({selectedFolderView}:Props) => {
     </>
   );
 }
-export default TreeFolders;
+export default TreeDocumentsIssue;

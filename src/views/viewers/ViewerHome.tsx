@@ -15,6 +15,7 @@ import Schedulle from "../Erp/Schedulle/Schedulle";
 import { useContext } from "react";
 import { GlobalContext } from "../../context/GlobalContext";
 import { ViewerIFC } from "./ViewerIFC/ViewerIFC";
+import IssueDetail from "../layouts/Applications/TimeLines/IssueDetail";
 
 const DetailModel = ()=>{
     
@@ -58,7 +59,7 @@ const DetailModel = ()=>{
         {optionModel === 'Graphics5' && <><BarChart5 /></>}
         {optionModel === 'Kanban1' && <><Kanban1 /></>}
         {optionModel === 'Schedulle' && <><Schedulle /></>}
-        
+        {optionModel === 'IssueDetail' && <><IssueDetail /></>}
         </>
     )
 }
@@ -105,7 +106,7 @@ const DetailModelIFC = ()=>{
         {optionModel === 'Graphics5' && <><BarChart5 /></>}
         {optionModel === 'Kanban1' && <><Kanban1 /></>}
         {optionModel === 'Schedulle' && <><Schedulle /></>}
-        
+        {optionModel === 'IssueDetail' && <><IssueDetail /></>}
         </>
     )
 }
